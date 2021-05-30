@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace RussianEmigratian
 {
@@ -11,24 +7,24 @@ namespace RussianEmigratian
 
         public Dictionary<string, int> asset_store = new Dictionary<string, int>
         {
-            ["Велосипед"] = 25,
-            ["Ноутбук"] = 40,
-            ["Оружие"] = 50,
-            ["Машина"] = 100,
-            ["Брендовая одежда"] = 50,
-            ["Playstation"] = 30,
-            ["Удобная кровать"] = 20,
-            ["Квартира"] = 200
+            ["Велосипед"] = 16000,
+            ["Ноутбук"] = 50000,
+            ["Оружие"] = 70000,
+            ["Машина"] = 600000,
+            ["Брендовая одежда"] = 80000,
+            ["Playstation 5"] = 60000,
+            ["Удобная кровать"] = 50000,
+            ["Квартира"] = 1400000
         };
 
         private int discount = 2; // Делитель для цены, когда игрок продает имущество обратно
-        public Dictionary<string, int> asset_person = new Dictionary<string, int>();
+        public Dictionary<string, int> asset_person = new Dictionary<string, int>(); // Имущество игрока
 
         public void Buy(string asset)
         {
             int price_key = 0;
             asset_store.TryGetValue(asset, out price_key);
-            asset_person.Add(asset, price_key/discount);
+            asset_person.Add(asset, price_key / discount);
             asset_store.Remove(asset);
         }
         public void Sell(string asset)

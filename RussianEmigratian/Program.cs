@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace RussianEmigratian
 {
@@ -17,6 +18,7 @@ namespace RussianEmigratian
             Random rnd = new Random();
             Condition condition = new Condition();
             Finance finance = new Finance();
+            Asset asset = new Asset();
 
             // Код для напоминания работы со словарями
             //Asset str = new Asset();
@@ -84,7 +86,7 @@ namespace RussianEmigratian
             for (; gameOver == false; i++)
             {
                 finance.ChangeBankPercent(); // Автоматический прирост банковского депо на каждом шаге
-                finance.ChangeInvestPercent(rnd.Next(-3, 3+1)); // Автоматическое изменение тела инвестиций на каждом шаге
+                finance.ChangeInvestPercent(rnd.Next(-3, 3 + 1)); // Автоматическое изменение тела инвестиций на каждом шаге
 
                 Console.WriteLine($"Здоровье: {condition.Helth} Энергия: {condition.Energy} Счастье: {condition.Happines}");
                 Console.WriteLine($"Деньги: {finance.Money} Банк: {finance.Bank} Инвестиции: {finance.Invest}");
@@ -93,19 +95,92 @@ namespace RussianEmigratian
 
                 if (int.TryParse(Console.ReadLine(), out action))
                 {
-                    if (action == 1) // Действие
+                    if (action == 1) // ДЕЙСТВИЕ
                     {
-
-                    }
-                    if (action == 2) // Финансы
-                    {
-                        int actionFinance = 0;
-                        Console.WriteLine("1 - банк: снять\\внести, 2 - инвестировать: снять\\внести, 3 - имущество");
-                        while (!int.TryParse(Console.ReadLine(), out actionFinance) || (actionFinance != 1 && actionFinance != 2 && actionFinance != 3) )
+                        int actionFree = 0;
+                        Console.WriteLine("1 - досуг, 2 - работа, 3 - покупки");
+                        while (!int.TryParse(Console.ReadLine(), out actionFree) || (actionFree != 1 && actionFree != 2 && actionFree != 3))
                         {
                             Console.WriteLine("Нет такого действия. Нажми Enter и попробуй еще раз");
                             Console.ReadLine();
-                            Console.WriteLine("1 - банк: снять\\внести, 2 - инвестировать: снять\\внести, 3 - имущество");
+                            Console.WriteLine("1 - досуг, 2 - работа, 3 - покупки");
+                        }
+                        if (actionFree == 1) // Досуг
+                        {
+
+                        }
+                        if (actionFree == 2) // Работа
+                        {
+
+                        }
+                        if (actionFree == 3) // Покупки
+                        {
+                            int actionFreeBuy = 0;
+                            Console.WriteLine("1 - обучение, 2 - имущество");
+                            while (!int.TryParse(Console.ReadLine(), out actionFreeBuy) || (actionFreeBuy != 1 && actionFreeBuy != 2))
+                            {
+                                Console.WriteLine("Нет такого действия. Нажми Enter и попробуй еще раз");
+                                Console.ReadLine();
+                                Console.WriteLine("1 - обучение, 2 - имущество");
+                            }
+
+                            if (actionFreeBuy == 1)
+                            {
+
+                            }
+                            if (actionFreeBuy == 2) // Покупка имущества
+                            {
+                                if (asset.asset_store.Count() != 0)
+                                {
+                                    int k = 0;
+                                    Console.WriteLine("0 - Ничего не покупать");
+                                    foreach (KeyValuePair<string, int> item in asset.asset_store)
+                                    {
+                                        k++;
+                                        Console.WriteLine(k.ToString() + " - " + item.Key + " " + item.Value);
+
+                                    }
+                                    int buyAsset = 0;
+                                    while (!int.TryParse(Console.ReadLine(), out buyAsset) || buyAsset < 0 || buyAsset > k)
+                                    {
+                                        Console.WriteLine(k.ToString() + "  " + buyAsset.ToString());
+                                        Console.WriteLine("Нет такого действия. Нажми Enter и попробуй еще раз");
+                                        Console.ReadLine();
+                                        k = 0;
+                                        Console.WriteLine("0 - Ничего не покупать");
+                                        foreach (KeyValuePair<string, int> item in asset.asset_store)
+                                        {
+                                            k++;
+                                            Console.WriteLine(k.ToString() + " - " + item.Key + " " + item.Value);
+                                        }
+                                    }
+                                    if (buyAsset != 0)
+                                    {
+                                        if (finance.ChangeMoney((asset.asset_store.ElementAt(buyAsset - 1).Value)*(-1)))
+                                        {
+                                            string asker = asset.asset_store.ElementAt(buyAsset - 1).Key;
+                                            asset.Buy(asker);
+                                        }
+                                    }
+                                    else continue;
+                                } else
+                                {
+                                    Console.WriteLine("Уже все куплено. Жми Enter");
+                                    Console.ReadLine();
+                                    continue;
+                                }
+                            }
+                        }
+                    }
+                    if (action == 2) // ФИНАНСЫ
+                    {
+                        int actionFinance = 0;
+                        Console.WriteLine("1 - банк: снять\\внести, 2 - инвестировать: снять\\внести, 3 - имущество");
+                        while (!int.TryParse(Console.ReadLine(), out actionFinance) || (actionFinance != 1 && actionFinance != 2 && actionFinance != 3))
+                        {
+                            Console.WriteLine("Нет такого действия. Нажми Enter и попробуй еще раз");
+                            Console.ReadLine();
+                            Console.WriteLine("1 - банк: снять\\внести, 2 - инвестировать: снять\\внести, 3 - продать имущество");
                         }
 
                         if (actionFinance == 1) // Банк: снять\\внести
@@ -120,7 +195,7 @@ namespace RussianEmigratian
                                 Console.WriteLine("Снятие со знаком '-', внесение со знаком '+'");
                                 Console.WriteLine("Сколько? Только целые числа");
                             }
-                            finance.ChangeMoney(moneyInOut*(-1));
+                            finance.ChangeMoney(moneyInOut * (-1));
                         }
                         if (actionFinance == 2) // Инвестировать: снять\\внести
                         {
@@ -136,13 +211,48 @@ namespace RussianEmigratian
                             }
                             finance.ChangeMoney(moneyInOut * (-1));
                         }
-                        if (actionFinance == 3)
+                        if (actionFinance == 3) // Продать имущество
                         {
-                            Console.WriteLine("Сколько?");
-                            Console.ReadLine();
+                            if (asset.asset_person.Count() != 0)
+                            {
+                                int k = 0;
+                                Console.WriteLine("0 - Ничего не продавать");
+                                foreach (KeyValuePair<string, int> item in asset.asset_person)
+                                {
+                                    k++;
+                                    Console.WriteLine(k.ToString() + " - " + item.Key + " " + Convert.ToInt32(item.Value).ToString());
+                                }
+                                int sellAsset = 0;
+                                while (!int.TryParse(Console.ReadLine(), out sellAsset) || sellAsset < 0 || sellAsset > k)
+                                {
+                                    Console.WriteLine(k.ToString() + "  " + sellAsset.ToString());
+                                    Console.WriteLine("Нет такого действия. Нажми Enter и попробуй еще раз");
+                                    Console.ReadLine();
+                                    k = 0;
+                                    Console.WriteLine("0 - Ничего не покупать");
+                                    foreach (KeyValuePair<string, int> item in asset.asset_store)
+                                    {
+                                        k++;
+                                        Console.WriteLine(k.ToString() + " - " + item.Key + " " + Convert.ToInt32(item.Value).ToString());
+                                    }
+                                }
+                                if (sellAsset != 0)
+                                {
+                                    finance.ChangeMoney(asset.asset_person.ElementAt(sellAsset - 1).Value);
+                                    string asker = asset.asset_person.ElementAt(sellAsset - 1).Key;
+                                    asset.Sell(asker);
+                                }
+                                else continue;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Нет имущества. Жми Enter");
+                                Console.ReadLine();
+                                continue;
+                            }
                         }
                     }
-                    if (action == 3) // Эмиграция
+                    if (action == 3) // ЭМИГРАЦИЯ
                     {
 
                     }

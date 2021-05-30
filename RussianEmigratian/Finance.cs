@@ -20,7 +20,40 @@ namespace RussianEmigratian
 
         public bool ChangeMoney(int x) // Изменение операционных денег
         {
-            if (Money + x < 0) return false;
+            if (Money + x < 0)
+            {
+                if (Money + Bank + x >= 0)
+                {
+                    Console.WriteLine("Не хватает операционных денег. Взять с банковского счета недостающей суммы?");
+                    Console.WriteLine("1 - да, 2 - нет");
+                    int takeMoney = 0;
+                    while (!int.TryParse(Console.ReadLine(), out takeMoney) || (takeMoney != 1 && takeMoney != 2))
+                    {
+                        Console.WriteLine("Нет такого действия. Нажми Enter и попробуй еще раз");
+                        Console.ReadLine();
+                        Console.WriteLine("Не хватает операционных денег. Взять с банковского счета недостающей суммы?");
+                        Console.WriteLine("1 - да, 2 - нет");
+                    }
+
+                    if (takeMoney == 1)
+                    {
+                        Bank = Bank + Money + x;
+                        Money = 0;
+                        return true;
+                    }
+                    if (takeMoney == 2)
+                    {
+                        Console.WriteLine("Хорошо. Идем дальше...");
+                        return false;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Не хватает денег");
+                    return false;
+                }
+            }
+            
             Money += x;
             return true;
         }
