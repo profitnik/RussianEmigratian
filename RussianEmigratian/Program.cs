@@ -23,26 +23,6 @@ namespace RussianEmigratian
             Leisure leisure = new Leisure();
             GamblingGame gambling = new GamblingGame();
 
-            // Код для напоминания работы со словарями
-            //Asset str = new Asset();
-            //foreach(KeyValuePair<string,int> f in str.asset_store)
-            //{
-            //    Console.WriteLine(f.Key);
-            //}
-            //str.Buy("Велосипед");
-            //Console.WriteLine("  ");
-            //Console.WriteLine("  ");
-            //foreach (KeyValuePair<string, int> f in str.asset_store)
-            //{
-            //    Console.WriteLine(f.Key);
-            //}
-            //Console.WriteLine("  ");
-            //Console.WriteLine("  ");
-            //foreach (KeyValuePair<string, int> f in str.asset_person)
-            //{
-            //    Console.WriteLine(f.Key);
-            //}
-
             Console.WriteLine("Привет, введи свое имя");
             name = Console.ReadLine();
             Console.WriteLine($"Отлично, {name}, а теперь введи свой возраст");
