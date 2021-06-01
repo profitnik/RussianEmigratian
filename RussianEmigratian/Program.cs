@@ -13,12 +13,15 @@ namespace RussianEmigratian
             string name; // Имя пользователя
             int action = 0; // Хранение действия
             bool gameOver = false; // Отлов окончания игры.
+            int[] coditionEffect = new int[4]; // Хранение значений, которые влияют на состояние через действия досуга
 
 
             Random rnd = new Random();
             Condition condition = new Condition();
             Finance finance = new Finance();
             Asset asset = new Asset();
+            Leisure leisure = new Leisure();
+            GamblingGame gambling = new GamblingGame();
 
             // Код для напоминания работы со словарями
             //Asset str = new Asset();
@@ -107,8 +110,90 @@ namespace RussianEmigratian
                         }
                         if (actionFree == 1) // Досуг
                         {
+                            int actionLeisure = 0;
+                            Console.WriteLine("1 - сон, 2 - прогулка, 3 - спорт, 4 - бар, 5 - видеоигры, 6 - азартные игры");
+                            while (!int.TryParse(Console.ReadLine(), out actionLeisure) || actionLeisure < 1 || actionLeisure > 6)
+                            {
+                                Console.WriteLine("Нет такого действия. Нажми Enter и попробуй еще раз");
+                                Console.ReadLine();
+                                Console.WriteLine("1 - сон, 2 - прогулка, 3 - спорт, 4 - бар, 5 - видеоигры, 6 - азартные игры");
+                            }
 
-                        }
+                            switch(actionLeisure)
+                            {
+                                case 1:
+                                    coditionEffect = leisure.Sleep();
+                                    condition.SetHelth(coditionEffect[0]);
+                                    condition.SetHappines(coditionEffect[1]);
+                                    condition.SetEnergy(coditionEffect[2]);
+                                    break;
+                                case 2:
+                                    coditionEffect = leisure.Walk();
+                                    condition.SetHelth(coditionEffect[0]);
+                                    condition.SetHappines(coditionEffect[1]);
+                                    condition.SetEnergy(coditionEffect[2]);
+                                    break;
+                                case 3:
+                                    coditionEffect = leisure.Sport();
+                                    condition.SetHelth(coditionEffect[0]);
+                                    condition.SetHappines(coditionEffect[1]);
+                                    condition.SetEnergy(coditionEffect[2]);
+                                    break;
+                                case 4:
+                                    coditionEffect = leisure.Bar();
+                                    condition.SetHelth(coditionEffect[0]);
+                                    condition.SetHappines(coditionEffect[1]);
+                                    condition.SetEnergy(coditionEffect[2]);
+                                    break;
+                                case 5:
+                                    coditionEffect = leisure.VideoGame();
+                                    condition.SetHelth(coditionEffect[0]);
+                                    condition.SetHappines(coditionEffect[1]);
+                                    condition.SetEnergy(coditionEffect[2]);
+                                    break;
+                                case 6:
+                                    Console.WriteLine("В какую игру сыграем?");
+                                    Console.WriteLine("1 - Красное\\Черное, 2 - Пять\\Шесть, 3 - Выше\\Ниже");
+                                    int game_select = 0;
+                                    while (!int.TryParse(Console.ReadLine(), out game_select) || game_select < 1 || game_select > 3)
+                                    {
+                                        Console.WriteLine("Нет такого действия. Нажми Enter и попробуй еще раз");
+                                        Console.ReadLine();
+                                        Console.WriteLine("В какую игру сыграем?");
+                                        Console.WriteLine("1 - Красное\\Черное, 2 - Пять\\Шесть, 3 - Выше\\Ниже");
+                                    }
+
+                                    if(game_select == 1)
+                                    {
+                                        Console.WriteLine("На что и сколько ставим?");
+                                        Console.WriteLine("Если на черное и ставка 100, то впиши ч100");
+                                        string bet = Console.ReadLine();
+                                        int clr_set = -1;
+                                        int summ_set = -1;
+
+                                        if (bet.IndexOf("ч") != -1 || bet.IndexOf("Ч") != -1) clr_set = 1;
+                                        if (bet.IndexOf("к") != -1 || bet.IndexOf("К") != -1) clr_set = 0;
+                                        //string pf = bet.Substring(1,bet.Length-1);
+                                        //Console.WriteLine(pf);
+                                        //while (!int.TryParse(bet.Substring(0,1), out summ_set) || clr_set == -1 || finance.ChangeMoney(summ_set*(-1)) == false)
+                                        //{
+                                            
+                                        //    Console.WriteLine("Некорретный ввод.");
+                                        //    Console.WriteLine("Если хочешь поставить 100 на черное, просто впиши ч100, на красное - к100");
+                                        //    Console.WriteLine("Введи ставку еще раз прямо сейчас");
+                                        //    bet = Console.ReadLine();
+                                        //    if (bet.IndexOf("ч") != -1 || bet.IndexOf("Ч") != -1) clr_set = 1;
+                                        //    if (bet.IndexOf("к") != -1 || bet.IndexOf("К") != -1) clr_set = 0;
+
+                                        //}
+                                        //finance.ChangeMoney(gambling.RedBlack(clr_set, summ_set));
+                                        
+                                    }
+                                    break;
+                                
+                            }
+                            
+                        }//------------------
                         if (actionFree == 2) // Работа
                         {
 
@@ -156,14 +241,15 @@ namespace RussianEmigratian
                                     }
                                     if (buyAsset != 0)
                                     {
-                                        if (finance.ChangeMoney((asset.asset_store.ElementAt(buyAsset - 1).Value)*(-1)))
+                                        if (finance.ChangeMoney((asset.asset_store.ElementAt(buyAsset - 1).Value) * (-1)))
                                         {
                                             string asker = asset.asset_store.ElementAt(buyAsset - 1).Key;
                                             asset.Buy(asker);
                                         }
                                     }
                                     else continue;
-                                } else
+                                }
+                                else
                                 {
                                     Console.WriteLine("Уже все куплено. Жми Enter");
                                     Console.ReadLine();

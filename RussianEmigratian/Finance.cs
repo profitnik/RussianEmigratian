@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RussianEmigratian
 {
@@ -53,7 +49,7 @@ namespace RussianEmigratian
                     return false;
                 }
             }
-            
+
             Money += x;
             return true;
         }
@@ -66,7 +62,7 @@ namespace RussianEmigratian
         }
         public void ChangeBankPercent() // Изменение банковских денег (проценты)
         {
-            
+
             if (Bank != 0)
             {
                 double profitPercent = Bank * BankPercent / 100;
@@ -80,8 +76,8 @@ namespace RussianEmigratian
                     Bank += Convert.ToInt32(profitPercent);
                     PercentGrowBank = 0;
                 }
-               
-                if(PercentGrowBank >= 1)
+
+                if (PercentGrowBank >= 1)
                 {
                     Bank += Convert.ToInt32(PercentGrowBank);
                     PercentGrowBank = 0;
