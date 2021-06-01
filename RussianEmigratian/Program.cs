@@ -13,7 +13,7 @@ namespace RussianEmigratian
             string name; // Имя пользователя
             int action = 0; // Хранение действия
             bool gameOver = false; // Отлов окончания игры.
-            int[] coditionEffect = new int[4]; // Хранение значений, которые влияют на состояние через действия досуга
+            int[] coditionEffect = new int[3]; // Хранение значений, которые влияют на состояние через действия досуга
 
 
             Random rnd = new Random();
@@ -71,8 +71,12 @@ namespace RussianEmigratian
                 finance.ChangeBankPercent(); // Автоматический прирост банковского депо на каждом шаге
                 finance.ChangeInvestPercent(rnd.Next(-3, 3 + 1)); // Автоматическое изменение тела инвестиций на каждом шаге
 
+                Console.WriteLine("");
+                Console.WriteLine("----------------------------------------");
                 Console.WriteLine($"Здоровье: {condition.Helth} Энергия: {condition.Energy} Счастье: {condition.Happines}");
                 Console.WriteLine($"Деньги: {finance.Money} Банк: {finance.Bank} Инвестиции: {finance.Invest}");
+                Console.WriteLine("----------------------------------------");
+                Console.WriteLine("");
                 Console.WriteLine("Твой следующий ход?");
                 Console.WriteLine("1 - действие, 2 - финансы, 3 - эмиграция");
 
@@ -132,6 +136,11 @@ namespace RussianEmigratian
                                     condition.SetEnergy(coditionEffect[2]);
                                     break;
                                 case 6:
+                                    coditionEffect = leisure.Gambling();
+                                    condition.SetHelth(coditionEffect[0]);
+                                    condition.SetHappines(coditionEffect[1]);
+                                    condition.SetEnergy(coditionEffect[2]);
+
                                     Console.WriteLine("В какую игру сыграем?");
                                     Console.WriteLine("1 - Красное\\Черное, 2 - Пять\\Шесть, 3 - Выше\\Ниже");
                                     int game_select = 0;
@@ -145,29 +154,121 @@ namespace RussianEmigratian
 
                                     if(game_select == 1)
                                     {
-                                        Console.WriteLine("На что и сколько ставим?");
-                                        Console.WriteLine("Если на черное и ставка 100, то впиши ч100");
-                                        string bet = Console.ReadLine();
-                                        int clr_set = -1;
-                                        int summ_set = -1;
+                                       
+                                        while (true)
+                                        {
+                                            Console.WriteLine("Правила игры: тебе предлагается поставить на какой-либо цвет - красный или черный.\n" +
+                                                "Просто выбирай цвет и размер ставки. Затем генератор случайных чисел генерирует цвет.\n" +
+                                                "Если он совпал с выбранным тобой, то твой выигрыш равен размеру удвоенной ставки, т.е. Х2.\n" +
+                                                "Все как на рулетке.");
+                                            Console.WriteLine("");
+                                            Console.WriteLine("так... на что и сколько ставим?");
+                                            Console.WriteLine("Если на черное и ставка 100, то впиши ч100");
+                                            string bet = Console.ReadLine();
+                                            int clr_set = -1;
+                                            int summ_set = -1;
 
-                                        if (bet.IndexOf("ч") != -1 || bet.IndexOf("Ч") != -1) clr_set = 1;
-                                        if (bet.IndexOf("к") != -1 || bet.IndexOf("К") != -1) clr_set = 0;
-                                        //string pf = bet.Substring(1,bet.Length-1);
-                                        //Console.WriteLine(pf);
-                                        //while (!int.TryParse(bet.Substring(0,1), out summ_set) || clr_set == -1 || finance.ChangeMoney(summ_set*(-1)) == false)
-                                        //{
+                                            if (bet.IndexOf("ч") != -1 || bet.IndexOf("Ч") != -1) clr_set = 1;
+                                            if (bet.IndexOf("к") != -1 || bet.IndexOf("К") != -1) clr_set = 0;
+                                            //Console.WriteLine(bet.IndexOf("к") + "  " + clr_set);
+                                            while (!int.TryParse(bet.Substring(1, bet.Length - 1), out summ_set) || clr_set == -1 || !finance.ChangeMoney(summ_set * (-1)))
+                                            {
+                                                Console.WriteLine("Некорретный ввод.");
+                                                Console.WriteLine("Если хочешь поставить 100 на черное, просто впиши ч100, на красное - к100");
+                                                Console.WriteLine("Введи ставку еще раз прямо сейчас");
+                                                bet = Console.ReadLine();
+                                                if (bet.IndexOf("ч") != -1 || bet.IndexOf("Ч") != -1) clr_set = 1;
+                                                if (bet.IndexOf("к") != -1 || bet.IndexOf("К") != -1) clr_set = 0;
+
+                                            }
+                                            finance.ChangeMoney(gambling.RedBlack(clr_set, summ_set));
+                                            int again;
+                                            Console.WriteLine("Сыграем еще раз?");
+                                            Console.WriteLine("1 - да, 2  - нет");
+                                            while (!int.TryParse(Console.ReadLine(), out again) || (again != 1 && again != 2))
+                                            {
+                                                Console.WriteLine("Нет такого действия. Нажми Enter и попробуй еще раз");
+                                                Console.ReadLine();
+                                                Console.WriteLine("Сыграем еще раз?");
+                                                Console.WriteLine("1 - да, 2  - нет");
+                                            }
+                                            if (again == 2) break;
+                                        }
+                                    }
+                                    if(game_select == 2)
+                                    {
+                                        while (true)
+                                        {
+                                            Console.WriteLine("Правила игры: c помощью генератора случайных чисел бросаем 2 шестигранных кубика.\n" +
+                                                "Если ни на одном из кубиков не выпадет 5 или 6, ты выиграешь - твоя ставка удваивается.\n" +
+                                                "Если хотя бы на одном кубике выпадет 5 или 6, ты програешь.");
+                                            Console.WriteLine("");
+                                            Console.WriteLine("так... ну, сколько ставим? Просто напиши число");
+                                            int bet;
+                                            while (!int.TryParse(Console.ReadLine(), out bet) || !finance.ChangeMoney(bet * (-1)))
+                                            {
+                                                Console.WriteLine("Нет такого действия. Нажми Enter и попробуй еще раз");
+                                                Console.ReadLine();
+                                                Console.WriteLine("так... ну, сколько ставим? Просто напиши число");
+                                            }
+                                            finance.ChangeMoney(gambling.FiveSix(bet));
+                                            int again;
+                                            Console.WriteLine("Сыграем еще раз?");
+                                            Console.WriteLine("1 - да, 2  - нет");
+                                            while (!int.TryParse(Console.ReadLine(), out again) || (again != 1 && again != 2))
+                                            {
+                                                Console.WriteLine("Нет такого действия. Нажми Enter и попробуй еще раз");
+                                                Console.ReadLine();
+                                                Console.WriteLine("Сыграем еще раз?");
+                                                Console.WriteLine("1 - да, 2  - нет");
+                                            }
+                                            if (again == 2) break;
+
+                                        }
+                                    }
+                                    if(game_select == 3)
+                                    {
+                                        while (true)
+                                        {
+                                            Console.WriteLine("Правила игры: c помощью генератора случайных чисел машина выбирает число в диапазоне от 0 до 100.\n" +
+                                                "У тебя есть возможность сделать ставку на два события:\n" +
+                                                "новое число будет в диапазоне от 0 до 48 или оно будет в диапазоне от 52 до 100.\n" +
+                                                "Если отгадаешь диапазон, твоя ставка удваивается.\n" +
+                                                "Если выпадает число в диапазоне от 49 до 51, ставка просто возвращается.");
+                                            Console.WriteLine("");
+                                            Console.WriteLine("Чтобы выберешь?");
+                                            Console.WriteLine("1 - ниже 49, 2 - выше 51");
+                                            int bet;
+                                            while (!int.TryParse(Console.ReadLine(), out bet) || (bet != 1 && bet != 2))
+                                            {
+                                                Console.WriteLine("Нет такого действия. Нажми Enter и попробуй еще раз");
+                                                Console.ReadLine();
+                                                Console.WriteLine("Чтобы выберешь?");
+                                                Console.WriteLine("1 - ниже 49, 2 - выше 51");
+                                            }
+                                            int betTwo;
+                                            Console.WriteLine("Сколько поставишь?");
+                                            while (!int.TryParse(Console.ReadLine(), out betTwo) || !finance.ChangeMoney(betTwo * (-1)))
+                                            {
+                                                Console.WriteLine("Нет такого действия. Нажми Enter и попробуй еще раз");
+                                                Console.ReadLine();
+                                                Console.WriteLine("Сколько поставишь?");
+                                            }
                                             
-                                        //    Console.WriteLine("Некорретный ввод.");
-                                        //    Console.WriteLine("Если хочешь поставить 100 на черное, просто впиши ч100, на красное - к100");
-                                        //    Console.WriteLine("Введи ставку еще раз прямо сейчас");
-                                        //    bet = Console.ReadLine();
-                                        //    if (bet.IndexOf("ч") != -1 || bet.IndexOf("Ч") != -1) clr_set = 1;
-                                        //    if (bet.IndexOf("к") != -1 || bet.IndexOf("К") != -1) clr_set = 0;
+                                            finance.ChangeMoney(gambling.UpDown(bet,betTwo));
+                                            int again;
+                                            Console.WriteLine("Сыграем еще раз?");
+                                            Console.WriteLine("1 - да, 2  - нет");
+                                            while (!int.TryParse(Console.ReadLine(), out again) || (again != 1 && again != 2))
+                                            {
+                                                Console.WriteLine("Нет такого действия. Нажми Enter и попробуй еще раз");
+                                                Console.ReadLine();
+                                                Console.WriteLine("Сыграем еще раз?");
+                                                Console.WriteLine("1 - да, 2  - нет");
+                                            }
+                                            if (again == 2) break;
 
-                                        //}
-                                        //finance.ChangeMoney(gambling.RedBlack(clr_set, summ_set));
-                                        
+                                        }
                                     }
                                     break;
                                 

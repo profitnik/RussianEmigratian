@@ -7,7 +7,7 @@ namespace RussianEmigratian
 
         public Dictionary<string, int> asset_store = new Dictionary<string, int>
         {
-            ["Велосипед"] = 16000,
+            ["Велосипед"] = 100,
             ["Ноутбук"] = 50000,
             ["Оружие"] = 70000,
             ["Машина"] = 600000,
