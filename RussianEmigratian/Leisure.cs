@@ -55,7 +55,7 @@ namespace RussianEmigratian
         {
             conditionChange[0] = -1;
             conditionChange[1] = 2;
-            conditionChange[2] = -1;
+            conditionChange[2] = -2;
 
             return (conditionChange);
         }

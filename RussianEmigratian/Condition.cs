@@ -24,7 +24,7 @@ namespace RussianEmigratian
         }
         public void SetEnergy(int x)
         {
-            int energy = Helth + x;
+            int energy = Energy + x;
             if (energy <= 100 && energy > 0) Energy = energy;
         }
     }
