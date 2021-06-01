@@ -19,7 +19,7 @@ namespace RussianEmigratian
         }
         public void SetHappines(int x)
         {
-            int happines = Helth + x;
+            int happines = Happines + x;
             if (happines <= 100 && happines > 0) Happines = happines;
         }
         public void SetEnergy(int x)
