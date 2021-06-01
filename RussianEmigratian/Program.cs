@@ -136,11 +136,7 @@ namespace RussianEmigratian
                                     condition.SetEnergy(coditionEffect[2]);
                                     break;
                                 case 6:
-                                    coditionEffect = leisure.Gambling();
-                                    condition.SetHelth(coditionEffect[0]);
-                                    condition.SetHappines(coditionEffect[1]);
-                                    condition.SetEnergy(coditionEffect[2]);
-
+                                    
                                     Console.WriteLine("В какую игру сыграем?");
                                     Console.WriteLine("1 - Красное\\Черное, 2 - Пять\\Шесть, 3 - Выше\\Ниже");
                                     int game_select = 0;
@@ -157,6 +153,11 @@ namespace RussianEmigratian
                                        
                                         while (true)
                                         {
+                                            coditionEffect = leisure.Gambling();
+                                            condition.SetHelth(coditionEffect[0]);
+                                            condition.SetHappines(coditionEffect[1]);
+                                            condition.SetEnergy(coditionEffect[2]);
+
                                             Console.WriteLine("Правила игры: тебе предлагается поставить на какой-либо цвет - красный или черный.\n" +
                                                 "Просто выбирай цвет и размер ставки. Затем генератор случайных чисел генерирует цвет.\n" +
                                                 "Если он совпал с выбранным тобой, то твой выигрыш равен размеру удвоенной ставки, т.е. Х2.\n" +
@@ -199,6 +200,10 @@ namespace RussianEmigratian
                                     {
                                         while (true)
                                         {
+                                            coditionEffect = leisure.Gambling();
+                                            condition.SetHelth(coditionEffect[0]);
+                                            condition.SetHappines(coditionEffect[1]);
+                                            condition.SetEnergy(coditionEffect[2]);
                                             Console.WriteLine("Правила игры: c помощью генератора случайных чисел бросаем 2 шестигранных кубика.\n" +
                                                 "Если ни на одном из кубиков не выпадет 5 или 6, ты выиграешь - твоя ставка удваивается.\n" +
                                                 "Если хотя бы на одном кубике выпадет 5 или 6, ты програешь.");
@@ -230,6 +235,10 @@ namespace RussianEmigratian
                                     {
                                         while (true)
                                         {
+                                            coditionEffect = leisure.Gambling();
+                                            condition.SetHelth(coditionEffect[0]);
+                                            condition.SetHappines(coditionEffect[1]);
+                                            condition.SetEnergy(coditionEffect[2]);
                                             Console.WriteLine("Правила игры: c помощью генератора случайных чисел машина выбирает число в диапазоне от 0 до 100.\n" +
                                                 "У тебя есть возможность сделать ставку на два события:\n" +
                                                 "новое число будет в диапазоне от 0 до 48 или оно будет в диапазоне от 52 до 100.\n" +
