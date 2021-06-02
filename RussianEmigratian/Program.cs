@@ -14,6 +14,11 @@ namespace RussianEmigratian
             int action = 0; // Хранение действия
             bool gameOver = false; // Отлов окончания игры.
             int[] coditionEffect = new int[3]; // Хранение значений, которые влияют на состояние через действия досуга
+            int mandoryPayments = -1; // Обязательные платежи буду списываться каждый день (ход). Число выбрано исходя из общих месячных
+                                         // платеже в размере 20 000 рублей. 20 000 / 31 = 645
+            int minusHelth = -1; // Вычитание здоровья на каждом ходу
+            int minusHappines = -2; // Вычитание счастья на каждом ходу
+            int minusEnergy = -3; // Вычитание энергии на каждом ходу
 
 
             Random rnd = new Random();
@@ -22,6 +27,7 @@ namespace RussianEmigratian
             Asset asset = new Asset();
             Leisure leisure = new Leisure();
             GamblingGame gambling = new GamblingGame();
+            Emigration emigration = new Emigration();
 
             Console.WriteLine("Привет, введи свое имя");
             name = Console.ReadLine();
@@ -68,13 +74,10 @@ namespace RussianEmigratian
 
             for (; gameOver == false; i++)
             {
-                int mandoryPayments = -1000; // Обязательные платежи буду списываться каждый день (ход). Число выбрано исходя из общих месячных
-                                             // платеже в размере 20 000 рублей. 20 000 / 31 = 645 
-
                 // Механика банкротства и ежедневного списания обязательных платежей
                 if (finance.Money <= 0)
                 {
-                    if (finance.Bank > mandoryPayments*(-1))
+                    if (finance.Bank > mandoryPayments * (-1))
                     {
                         Console.WriteLine("Не хватает денег на еду и крышу... если ты сейчас не снимешь деньги с банковского счета,\n" +
                             "то игра закончится. Сдаешься?");
@@ -82,9 +85,10 @@ namespace RussianEmigratian
                         {
                             break;
                         }
-                    } else
+                    }
+                    else
                     {
-                        if(finance.Invest > mandoryPayments * (-1))
+                        if (finance.Invest > mandoryPayments * (-1))
                         {
                             Console.WriteLine("Не хватает денег на еду и крышу... если ты сейчас не снимешь деньги с инвестиций,\n" +
                                               "то игра закончится. Сдаешься?");
@@ -92,7 +96,8 @@ namespace RussianEmigratian
                             {
                                 break;
                             }
-                        } else
+                        }
+                        else
                         {
                             Console.WriteLine("Ты банкрот. Ни банковских накоплений, ни инвестиционных...\n" +
                                 "Неужели ты хочешь провести свой остаток дней там, где находишься? Луче попробуй еще раз.");
@@ -100,12 +105,42 @@ namespace RussianEmigratian
                         }
                     }
 
-                    
-                    
+
+
                 }
                 else finance.ChangeMoney(mandoryPayments);
                 //----------------------------------------------------------------------------
 
+                if (condition.Helth > minusHelth * (-1))
+                {
+                    condition.SetHelth(minusHelth);
+                }
+                else
+                {
+                    Console.WriteLine("Здоровье не бесконечно, и оно закончилось. Это самое главное, о чем нужно заботиться.");
+                    break;
+                }
+
+                if (condition.Happines > minusHappines * (-1))
+                {
+                    condition.SetHappines(minusHappines);
+                }
+                else
+                {
+                    Console.WriteLine("Умереть от депрессии... не самый приятный выход. Следи за уровнем своего счастья.");
+                    break;
+                }
+
+
+                if (condition.Energy > minusEnergy * (-1))
+                {
+                    condition.SetEnergy(minusEnergy);
+                }
+                else
+                {
+                    Console.WriteLine("Ты выгорел. Нет больше ни сил, ни желаний. Следи за уровнем своей энергии");
+                    break;
+                }
 
                 finance.ChangeBankPercent(); // Автоматический прирост банковского депо на каждом шаге
                 finance.ChangeInvestPercent(rnd.Next(-3, 3 + 1)); // Автоматическое изменение тела инвестиций на каждом шаге
@@ -469,6 +504,33 @@ namespace RussianEmigratian
                     }
                     if (action == 3) // ЭМИГРАЦИЯ
                     {
+                        if(emigration.GetStatus(20,finance.Money+finance.Bank+finance.Invest) == false) // !!!!!!! Здесь нужно будет передать актуальные данные по языку
+                        {
+                            emigration.SetDiagrammeLanguage(20);// !!!!!!! Здесь нужно будет передать актуальные данные по языку
+                            emigration.SetDiagrammeMoney(finance.Money + finance.Bank + finance.Invest);
+                            Console.WriteLine("");
+                            Console.WriteLine("Впечатляет? В любом случае - продолжай. Жми Enter");
+                            Console.ReadLine();
+                        } else
+                        {
+                            emigration.SetDiagrammeLanguage(100);
+                            emigration.SetDiagrammeMoney(1000000);
+                            Console.WriteLine("Что ж... ты полностью готов смотать удочки и рвануть за бугор.\n" +
+                                "Покупаем билет и летим?");
+                            Console.WriteLine("1 - купить билет, собрать вещи и смотаться быстрей, 2 - нет, пожалуй, я останусь, все не так плохо");
+                            int choise = 0;
+
+                            while (!int.TryParse(Console.ReadLine(), out choise) || (choise != 1 && choise != 2))
+                            {
+                                Console.WriteLine("Нет такого действия. Нажми Enter и попробуй еще раз");
+                                Console.ReadLine();
+                                Console.WriteLine("1 - купить билет, собрать вещи и смотаться быстрей, 2 - нет, пожалуй, я останусь, все не так плохо");
+                            }
+
+                            if (choise == 1) Console.WriteLine("Удачного полета. Тебя ждет новая жизнь!");
+                            if (choise == 2) Console.WriteLine("Тоже выбор. Достоин уважений. Успехов!");
+                        }
+                        
 
                     }
                     if (action != 1 && action != 2 && action != 3)
@@ -484,6 +546,7 @@ namespace RussianEmigratian
                     Console.ReadLine();
                     continue;
                 }
+
             }
 
 
