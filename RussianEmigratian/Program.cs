@@ -15,7 +15,7 @@ namespace RussianEmigratian
             bool gameOver = false; // Отлов окончания игры.
             int[] coditionEffect = new int[3]; // Хранение значений, которые влияют на состояние через действия досуга
             int mandoryPayments = -1; // Обязательные платежи буду списываться каждый день (ход). Число выбрано исходя из общих месячных
-                                         // платеже в размере 20 000 рублей. 20 000 / 31 = 645
+                                      // платеже в размере 20 000 рублей. 20 000 / 31 = 645
             int minusHelth = -1; // Вычитание здоровья на каждом ходу
             int minusHappines = -2; // Вычитание счастья на каждом ходу
             int minusEnergy = -3; // Вычитание энергии на каждом ходу
@@ -80,7 +80,7 @@ namespace RussianEmigratian
                     if (finance.Bank > mandoryPayments * (-1))
                     {
                         Console.WriteLine("Не хватает денег на еду и крышу... если ты сейчас не снимешь деньги с банковского счета,\n" +
-                            "то игра закончится. Сдаешься?");
+                            "то игра закончится.");
                         if (finance.ChangeMoney(mandoryPayments) == false)
                         {
                             break;
@@ -91,7 +91,7 @@ namespace RussianEmigratian
                         if (finance.Invest > mandoryPayments * (-1))
                         {
                             Console.WriteLine("Не хватает денег на еду и крышу... если ты сейчас не снимешь деньги с инвестиций,\n" +
-                                              "то игра закончится. Сдаешься?");
+                                              "то игра закончится.");
                             if (finance.ChangeMoney(mandoryPayments) == false)
                             {
                                 break;
@@ -100,7 +100,7 @@ namespace RussianEmigratian
                         else
                         {
                             Console.WriteLine("Ты банкрот. Ни банковских накоплений, ни инвестиционных...\n" +
-                                "Неужели ты хочешь провести свой остаток дней там, где находишься? Луче попробуй еще раз.");
+                                "Неужели ты хочешь провести свой остаток дней там, где находишься? Лучше попробуй еще раз.");
                             break;
                         }
                     }
@@ -162,7 +162,7 @@ namespace RussianEmigratian
                         Console.WriteLine("1 - досуг, 2 - работа, 3 - покупки");
                         while (!int.TryParse(Console.ReadLine(), out actionFree) || (actionFree != 1 && actionFree != 2 && actionFree != 3))
                         {
-                            Console.WriteLine("Нет такого действия. Нажми Enter и попробуй еще раз");
+                            Console.WriteLine("Действие невозможно. Нажми Enter и попробуй еще раз");
                             Console.ReadLine();
                             Console.WriteLine("1 - досуг, 2 - работа, 3 - покупки");
                         }
@@ -172,12 +172,12 @@ namespace RussianEmigratian
                             Console.WriteLine("1 - сон, 2 - прогулка, 3 - спорт, 4 - бар, 5 - видеоигры, 6 - азартные игры");
                             while (!int.TryParse(Console.ReadLine(), out actionLeisure) || actionLeisure < 1 || actionLeisure > 6)
                             {
-                                Console.WriteLine("Нет такого действия. Нажми Enter и попробуй еще раз");
+                                Console.WriteLine("Действие невозможно. Нажми Enter и попробуй еще раз");
                                 Console.ReadLine();
                                 Console.WriteLine("1 - сон, 2 - прогулка, 3 - спорт, 4 - бар, 5 - видеоигры, 6 - азартные игры");
                             }
 
-                            switch(actionLeisure)
+                            switch (actionLeisure)
                             {
                                 case 1:
                                     coditionEffect = leisure.Sleep();
@@ -210,21 +210,21 @@ namespace RussianEmigratian
                                     condition.SetEnergy(coditionEffect[2]);
                                     break;
                                 case 6:
-                                    
+
                                     Console.WriteLine("В какую игру сыграем?");
                                     Console.WriteLine("1 - Красное\\Черное, 2 - Пять\\Шесть, 3 - Выше\\Ниже");
                                     int game_select = 0;
                                     while (!int.TryParse(Console.ReadLine(), out game_select) || game_select < 1 || game_select > 3)
                                     {
-                                        Console.WriteLine("Нет такого действия. Нажми Enter и попробуй еще раз");
+                                        Console.WriteLine("Действие невозможно. Нажми Enter и попробуй еще раз");
                                         Console.ReadLine();
                                         Console.WriteLine("В какую игру сыграем?");
                                         Console.WriteLine("1 - Красное\\Черное, 2 - Пять\\Шесть, 3 - Выше\\Ниже");
                                     }
 
-                                    if(game_select == 1)
+                                    if (game_select == 1)
                                     {
-                                       
+
                                         while (true)
                                         {
                                             coditionEffect = leisure.Gambling();
@@ -257,20 +257,29 @@ namespace RussianEmigratian
 
                                             }
                                             finance.ChangeMoney(gambling.RedBlack(clr_set, summ_set));
-                                            int again;
-                                            Console.WriteLine("Сыграем еще раз?");
-                                            Console.WriteLine("1 - да, 2  - нет");
-                                            while (!int.TryParse(Console.ReadLine(), out again) || (again != 1 && again != 2))
+                                            if (finance.Money > 1)
                                             {
-                                                Console.WriteLine("Нет такого действия. Нажми Enter и попробуй еще раз");
-                                                Console.ReadLine();
+                                                int again;
                                                 Console.WriteLine("Сыграем еще раз?");
                                                 Console.WriteLine("1 - да, 2  - нет");
+                                                while (!int.TryParse(Console.ReadLine(), out again) || (again != 1 && again != 2))
+                                                {
+                                                    Console.WriteLine("Действие невозможно. Нажми Enter и попробуй еще раз");
+                                                    Console.ReadLine();
+                                                    Console.WriteLine("Сыграем еще раз?");
+                                                    Console.WriteLine("1 - да, 2  - нет");
+                                                }
+                                                if (again == 2) break;
                                             }
-                                            if (again == 2) break;
+                                            else
+                                            {
+                                                Console.WriteLine("Твои карманы пусты. Иди, заработай");
+                                                Console.WriteLine("");
+                                                break;
+                                            }
                                         }
                                     }
-                                    if(game_select == 2)
+                                    if (game_select == 2)
                                     {
                                         while (true)
                                         {
@@ -286,26 +295,36 @@ namespace RussianEmigratian
                                             int bet;
                                             while (!int.TryParse(Console.ReadLine(), out bet) || !finance.ChangeMoney(bet * (-1)))
                                             {
-                                                Console.WriteLine("Нет такого действия. Нажми Enter и попробуй еще раз");
+                                                Console.WriteLine("Действие невозможно. Нажми Enter и попробуй еще раз");
                                                 Console.ReadLine();
                                                 Console.WriteLine("так... ну, сколько ставим? Просто напиши число");
                                             }
+
                                             finance.ChangeMoney(gambling.FiveSix(bet));
-                                            int again;
-                                            Console.WriteLine("Сыграем еще раз?");
-                                            Console.WriteLine("1 - да, 2  - нет");
-                                            while (!int.TryParse(Console.ReadLine(), out again) || (again != 1 && again != 2))
+                                            if (finance.Money > 1)
                                             {
-                                                Console.WriteLine("Нет такого действия. Нажми Enter и попробуй еще раз");
-                                                Console.ReadLine();
+                                                int again;
                                                 Console.WriteLine("Сыграем еще раз?");
                                                 Console.WriteLine("1 - да, 2  - нет");
+                                                while (!int.TryParse(Console.ReadLine(), out again) || (again != 1 && again != 2))
+                                                {
+                                                    Console.WriteLine("Действие невозможно. Нажми Enter и попробуй еще раз");
+                                                    Console.ReadLine();
+                                                    Console.WriteLine("Сыграем еще раз?");
+                                                    Console.WriteLine("1 - да, 2  - нет");
+                                                }
+                                                if (again == 2) break;
                                             }
-                                            if (again == 2) break;
+                                            else
+                                            {
+                                                Console.WriteLine("Твои карманы пусты. Иди, заработай");
+                                                Console.WriteLine("");
+                                                break;
+                                            }
 
                                         }
                                     }
-                                    if(game_select == 3)
+                                    if (game_select == 3)
                                     {
                                         while (true)
                                         {
@@ -324,7 +343,7 @@ namespace RussianEmigratian
                                             int bet;
                                             while (!int.TryParse(Console.ReadLine(), out bet) || (bet != 1 && bet != 2))
                                             {
-                                                Console.WriteLine("Нет такого действия. Нажми Enter и попробуй еще раз");
+                                                Console.WriteLine("Действие невозможно. Нажми Enter и попробуй еще раз");
                                                 Console.ReadLine();
                                                 Console.WriteLine("Чтобы выберешь?");
                                                 Console.WriteLine("1 - ниже 49, 2 - выше 51");
@@ -333,30 +352,38 @@ namespace RussianEmigratian
                                             Console.WriteLine("Сколько поставишь?");
                                             while (!int.TryParse(Console.ReadLine(), out betTwo) || !finance.ChangeMoney(betTwo * (-1)))
                                             {
-                                                Console.WriteLine("Нет такого действия. Нажми Enter и попробуй еще раз");
+                                                Console.WriteLine("Действие невозможно. Нажми Enter и попробуй еще раз");
                                                 Console.ReadLine();
                                                 Console.WriteLine("Сколько поставишь?");
                                             }
-                                            
-                                            finance.ChangeMoney(gambling.UpDown(bet,betTwo));
-                                            int again;
-                                            Console.WriteLine("Сыграем еще раз?");
-                                            Console.WriteLine("1 - да, 2  - нет");
-                                            while (!int.TryParse(Console.ReadLine(), out again) || (again != 1 && again != 2))
+
+                                            finance.ChangeMoney(gambling.UpDown(bet, betTwo));
+                                            if (finance.Money > 1)
                                             {
-                                                Console.WriteLine("Нет такого действия. Нажми Enter и попробуй еще раз");
-                                                Console.ReadLine();
+                                                int again;
                                                 Console.WriteLine("Сыграем еще раз?");
                                                 Console.WriteLine("1 - да, 2  - нет");
+                                                while (!int.TryParse(Console.ReadLine(), out again) || (again != 1 && again != 2))
+                                                {
+                                                    Console.WriteLine("Действие невозможно. Нажми Enter и попробуй еще раз");
+                                                    Console.ReadLine();
+                                                    Console.WriteLine("Сыграем еще раз?");
+                                                    Console.WriteLine("1 - да, 2  - нет");
+                                                }
+                                                if (again == 2) break;
                                             }
-                                            if (again == 2) break;
-
+                                            else
+                                            {
+                                                Console.WriteLine("Твои карманы пусты. Иди, заработай");
+                                                Console.WriteLine("");
+                                                break;
+                                            }
                                         }
                                     }
                                     break;
-                                
+
                             }
-                            
+
                         }//------------------
                         if (actionFree == 2) // Работа
                         {
@@ -368,7 +395,7 @@ namespace RussianEmigratian
                             Console.WriteLine("1 - обучение, 2 - имущество");
                             while (!int.TryParse(Console.ReadLine(), out actionFreeBuy) || (actionFreeBuy != 1 && actionFreeBuy != 2))
                             {
-                                Console.WriteLine("Нет такого действия. Нажми Enter и попробуй еще раз");
+                                Console.WriteLine("Действие невозможно. Нажми Enter и попробуй еще раз");
                                 Console.ReadLine();
                                 Console.WriteLine("1 - обучение, 2 - имущество");
                             }
@@ -393,7 +420,7 @@ namespace RussianEmigratian
                                     while (!int.TryParse(Console.ReadLine(), out buyAsset) || buyAsset < 0 || buyAsset > k)
                                     {
                                         Console.WriteLine(k.ToString() + "  " + buyAsset.ToString());
-                                        Console.WriteLine("Нет такого действия. Нажми Enter и попробуй еще раз");
+                                        Console.WriteLine("Действие невозможно. Нажми Enter и попробуй еще раз");
                                         Console.ReadLine();
                                         k = 0;
                                         Console.WriteLine("0 - Ничего не покупать");
@@ -428,7 +455,7 @@ namespace RussianEmigratian
                         Console.WriteLine("1 - банк: снять\\внести, 2 - инвестировать: снять\\внести, 3 - имущество");
                         while (!int.TryParse(Console.ReadLine(), out actionFinance) || (actionFinance != 1 && actionFinance != 2 && actionFinance != 3))
                         {
-                            Console.WriteLine("Нет такого действия. Нажми Enter и попробуй еще раз");
+                            Console.WriteLine("Действие невозможно. Нажми Enter и попробуй еще раз");
                             Console.ReadLine();
                             Console.WriteLine("1 - банк: снять\\внести, 2 - инвестировать: снять\\внести, 3 - продать имущество");
                         }
@@ -438,9 +465,9 @@ namespace RussianEmigratian
                             Console.WriteLine("Снятие со знаком '-', внесение со знаком '+'");
                             Console.WriteLine("Введи целое число");
                             int moneyInOut = 0;
-                            while (!int.TryParse(Console.ReadLine(), out moneyInOut) || !finance.ChangeBankAction(moneyInOut))
+                            while (!int.TryParse(Console.ReadLine(), out moneyInOut) || moneyInOut > finance.Money || !finance.ChangeBankAction(moneyInOut))
                             {
-                                Console.WriteLine("Введите корректную сумму. Нажми Enter и попробуй еще раз");
+                                Console.WriteLine("Такой суммы нет. Нажми Enter и попробуй еще раз");
                                 Console.ReadLine();
                                 Console.WriteLine("Снятие со знаком '-', внесение со знаком '+'");
                                 Console.WriteLine("Сколько? Только целые числа");
@@ -452,9 +479,9 @@ namespace RussianEmigratian
                             Console.WriteLine("Снятие со знаком '-', внесение со знаком '+'");
                             Console.WriteLine("Введи целое число");
                             int moneyInOut = 0;
-                            while (!int.TryParse(Console.ReadLine(), out moneyInOut) || !finance.ChangeInvestAction(moneyInOut))
+                            while (!int.TryParse(Console.ReadLine(), out moneyInOut) || moneyInOut > finance.Money || !finance.ChangeInvestAction(moneyInOut) )
                             {
-                                Console.WriteLine("Введите корректную сумму. Нажми Enter и попробуй еще раз");
+                                Console.WriteLine("Такой суммы нет. Нажми Enter и попробуй еще раз");
                                 Console.ReadLine();
                                 Console.WriteLine("Снятие со знаком '-', внесение со знаком '+'");
                                 Console.WriteLine("Сколько? Только целые числа");
@@ -476,7 +503,7 @@ namespace RussianEmigratian
                                 while (!int.TryParse(Console.ReadLine(), out sellAsset) || sellAsset < 0 || sellAsset > k)
                                 {
                                     Console.WriteLine(k.ToString() + "  " + sellAsset.ToString());
-                                    Console.WriteLine("Нет такого действия. Нажми Enter и попробуй еще раз");
+                                    Console.WriteLine("Действие невозможно. Нажми Enter и попробуй еще раз");
                                     Console.ReadLine();
                                     k = 0;
                                     Console.WriteLine("0 - Ничего не покупать");
@@ -504,14 +531,15 @@ namespace RussianEmigratian
                     }
                     if (action == 3) // ЭМИГРАЦИЯ
                     {
-                        if(emigration.GetStatus(20,finance.Money+finance.Bank+finance.Invest) == false) // !!!!!!! Здесь нужно будет передать актуальные данные по языку
+                        if (emigration.GetStatus(0, finance.Money + finance.Bank + finance.Invest) == false) // !!!!!!! Здесь нужно будет передать актуальные данные по языку
                         {
                             emigration.SetDiagrammeLanguage(20);// !!!!!!! Здесь нужно будет передать актуальные данные по языку
                             emigration.SetDiagrammeMoney(finance.Money + finance.Bank + finance.Invest);
                             Console.WriteLine("");
                             Console.WriteLine("Впечатляет? В любом случае - продолжай. Жми Enter");
                             Console.ReadLine();
-                        } else
+                        }
+                        else
                         {
                             emigration.SetDiagrammeLanguage(100);
                             emigration.SetDiagrammeMoney(1000000);
@@ -522,7 +550,7 @@ namespace RussianEmigratian
 
                             while (!int.TryParse(Console.ReadLine(), out choise) || (choise != 1 && choise != 2))
                             {
-                                Console.WriteLine("Нет такого действия. Нажми Enter и попробуй еще раз");
+                                Console.WriteLine("Действие невозможно. Нажми Enter и попробуй еще раз");
                                 Console.ReadLine();
                                 Console.WriteLine("1 - купить билет, собрать вещи и смотаться быстрей, 2 - нет, пожалуй, я останусь, все не так плохо");
                             }
@@ -530,19 +558,19 @@ namespace RussianEmigratian
                             if (choise == 1) Console.WriteLine("Удачного полета. Тебя ждет новая жизнь!");
                             if (choise == 2) Console.WriteLine("Тоже выбор. Достоин уважений. Успехов!");
                         }
-                        
+
 
                     }
                     if (action != 1 && action != 2 && action != 3)
                     {
-                        Console.WriteLine("Нет такого действия. Нажми Enter и попробуй еще раз");
+                        Console.WriteLine("Действие невозможно. Нажми Enter и попробуй еще раз");
                         Console.ReadLine();
                         continue;
                     }
                 }
                 else
                 {
-                    Console.WriteLine("Нет такого действия. Нажми Enter и попробуй еще раз");
+                    Console.WriteLine("Действие невозможно. Нажми Enter и попробуй еще раз");
                     Console.ReadLine();
                     continue;
                 }

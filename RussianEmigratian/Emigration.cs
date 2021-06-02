@@ -71,7 +71,6 @@ namespace RussianEmigratian
 
         public bool GetStatus(int language, int money)
         {
-            Console.WriteLine("!!!!!!!"+language);
             if (language == 100 && money == 1000000)
             {
                 return true;
