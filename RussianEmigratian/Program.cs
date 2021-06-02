@@ -68,6 +68,45 @@ namespace RussianEmigratian
 
             for (; gameOver == false; i++)
             {
+                int mandoryPayments = -1000; // Обязательные платежи буду списываться каждый день (ход). Число выбрано исходя из общих месячных
+                                             // платеже в размере 20 000 рублей. 20 000 / 31 = 645 
+
+                // Механика банкротства и ежедневного списания обязательных платежей
+                if (finance.Money <= 0)
+                {
+                    if (finance.Bank > mandoryPayments*(-1))
+                    {
+                        Console.WriteLine("Не хватает денег на еду и крышу... если ты сейчас не снимешь деньги с банковского счета,\n" +
+                            "то игра закончится. Сдаешься?");
+                        if (finance.ChangeMoney(mandoryPayments) == false)
+                        {
+                            break;
+                        }
+                    } else
+                    {
+                        if(finance.Invest > mandoryPayments * (-1))
+                        {
+                            Console.WriteLine("Не хватает денег на еду и крышу... если ты сейчас не снимешь деньги с инвестиций,\n" +
+                                              "то игра закончится. Сдаешься?");
+                            if (finance.ChangeMoney(mandoryPayments) == false)
+                            {
+                                break;
+                            }
+                        } else
+                        {
+                            Console.WriteLine("Ты банкрот. Ни банковских накоплений, ни инвестиционных...\n" +
+                                "Неужели ты хочешь провести свой остаток дней там, где находишься? Луче попробуй еще раз.");
+                            break;
+                        }
+                    }
+
+                    
+                    
+                }
+                else finance.ChangeMoney(mandoryPayments);
+                //----------------------------------------------------------------------------
+
+
                 finance.ChangeBankPercent(); // Автоматический прирост банковского депо на каждом шаге
                 finance.ChangeInvestPercent(rnd.Next(-3, 3 + 1)); // Автоматическое изменение тела инвестиций на каждом шаге
 
