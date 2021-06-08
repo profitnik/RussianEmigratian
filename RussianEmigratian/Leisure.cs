@@ -15,13 +15,13 @@ namespace RussianEmigratian
         {
             conditionChange[0] = 1;
             conditionChange[1] = 1;
-            conditionChange[2] = 1;
+            conditionChange[2] = 2;
 
             return (conditionChange);
         }
         public int[] Walk()
         {
-            conditionChange[0] = 1;
+            conditionChange[0] = 0;
             conditionChange[1] = 1;
             conditionChange[2] = -1;
 
@@ -39,7 +39,7 @@ namespace RussianEmigratian
         {
             conditionChange[0] = -1;
             conditionChange[1] = 2;
-            conditionChange[2] = -1;
+            conditionChange[2] = -2;
 
             return (conditionChange);
         }
@@ -55,7 +55,7 @@ namespace RussianEmigratian
         {
             conditionChange[0] = -1;
             conditionChange[1] = 2;
-            conditionChange[2] = -2;
+            conditionChange[2] = -1;
 
             return (conditionChange);
         }

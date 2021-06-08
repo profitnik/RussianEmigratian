@@ -16,14 +16,14 @@ namespace RussianEmigratian
             int part = language / 5;
             if (part == 20)
             {
-                Console.Write("√ Язык.\n" +
+                Console.Write("√ Язык\n" +
                     "Уровень " + language + "\\100  ");
                 
             }
 
             if (part < 20)
             {
-                Console.Write("X Язык.\n" +
+                Console.Write("X Язык\n" +
                     "Уровень " + language + "\\100  ");
             }
 
@@ -71,7 +71,7 @@ namespace RussianEmigratian
 
         public bool GetStatus(int language, int money)
         {
-            if (language == 100 && money == 1000000)
+            if (language == 100 && money >= 1000000)
             {
                 return true;
             }

@@ -9,7 +9,7 @@ namespace RussianEmigratian
     class GamblingGame
     {
         Random rnd = new Random();
-        public int RedBlack(int clr,int summ) //Красное черное
+        public int RedBlack(int clr,int summ,int ratio) //Красное черное
         {
             // clr: 0 - красное, 1 - черное
             int result = 0;
@@ -18,9 +18,9 @@ namespace RussianEmigratian
 
             if (num == 0 && clr == 0)
             {
-                result = summ * 2;
+                result = summ*ratio;
                 Console.WriteLine("");
-                Console.WriteLine($"√ Выпало КРАСНОЕ. Ты выиграл {result/2}");
+                Console.WriteLine($"√ Выпало КРАСНОЕ. Ты выиграл {result/ratio}");
                 Console.WriteLine("");
             }
             if (num == 0 && clr == 1)
@@ -33,9 +33,9 @@ namespace RussianEmigratian
 
             if (num == 1 && clr == 1)
             {
-                result = summ * 2;
+                result = summ * ratio;
                 Console.WriteLine("");
-                Console.WriteLine($"√ Выпало ЧЕРНОЕ. Ты выиграл {result/2}");
+                Console.WriteLine($"√ Выпало ЧЕРНОЕ. Ты выиграл {result/ ratio}");
                 Console.WriteLine("");
             }
             if (num == 1 && clr == 0)
@@ -49,7 +49,7 @@ namespace RussianEmigratian
             return (result);
         }
 
-        public int FiveSix(int summ)
+        public int FiveSix(int summ, int ratio)
         {
             int result = 0;
             int numOne = rnd.Next(1, 7);
@@ -154,19 +154,19 @@ namespace RussianEmigratian
             if (numOne == 5 || numTwo == 5 || numOne == 6 || numTwo == 6)
             {
                 // Ставка вычитается на уровне проверки корретности ввода
-                Console.WriteLine("X Ты проиграл");
+                Console.WriteLine($"X Ты проиграл {summ}");
                 Console.WriteLine("");
             }
             else
             {
-                result = summ * 2;
-                Console.WriteLine("√ Ты выиграл");
+                result = summ * ratio;
+                Console.WriteLine($"√ Ты выиграл {result/ratio}");
                 Console.WriteLine("");
             }
 
             return (result);
         }
-        public int UpDown(int number, int summ) //Красное черное
+        public int UpDown(int number, int summ, int ratio) // Выше\ниже
         {
             // number: 1 - ниже, 2 - выше
             int result = 0;
@@ -181,9 +181,9 @@ namespace RussianEmigratian
 
             if (num < 49 && number == 1)
             {
-                result = summ * 2;
+                result = summ * ratio;
                 Console.WriteLine("");
-                Console.WriteLine($"√ Выпало число {num}. Ты выиграл {result / 2}");
+                Console.WriteLine($"√ Выпало число {num}. Ты выиграл {result / ratio}");
                 Console.WriteLine("");
             }
             if (num < 49 && number == 2)
@@ -196,9 +196,9 @@ namespace RussianEmigratian
 
             if (num > 51 && number == 2)
             {
-                result = summ * 2;
+                result = summ * ratio;
                 Console.WriteLine("");
-                Console.WriteLine($"√ Выпало число {num}. Ты выиграл {result / 2}");
+                Console.WriteLine($"√ Выпало число {num}. Ты выиграл {result / ratio}");
                 Console.WriteLine("");
             }
             if (num > 51 && number == 1)

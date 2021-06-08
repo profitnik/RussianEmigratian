@@ -7,7 +7,12 @@ namespace RussianEmigratian
         private double BankPercent = 0.05; // Процент начисления на остаток в банке каждый ход
         private double PercentGrowBank = 0; // Накопление банковского процента, если значение по % получается < 1
         private double PercentGrowInvest = 0; // Накопление инвестиционного процента, если значение по % получается < 1 и > -1
-        public int Money { get; private set; } = 10000; // Несмотря на то, что мы работаем с деньгами,
+        public int allInvest { get; private set; } = 0; // Всего инвестировано
+        public int allTaken { get; private set; } = 0;  // Всего изъято инвестиции
+
+        public int allBank { get; private set; } = 0; // Всего инвестировано
+        public int allTakenBank { get; private set; } = 0;  // Всего изъято инвестиции
+        public int Money { get; private set; } = 30000; // Несмотря на то, что мы работаем с деньгами,
                                                         // деньги являются у.е. и не требуют точности.
                                                         // Упрощения игрового процесса
         public int Bank { get; private set; } = 0;
@@ -87,6 +92,12 @@ namespace RussianEmigratian
 
         public bool ChangeBankAction(int x) // Изменение банковских денег (действия)
         {
+            if (x > 0) allBank += x;
+            if(x < 0)
+            {
+                allTakenBank += x;
+                allTakenBank *= -1;
+            }
             if (Bank + x < 0) return false;
             Bank += x;
             return true;
@@ -117,6 +128,12 @@ namespace RussianEmigratian
         }
         public bool ChangeInvestAction(int x) // Изменение инвестиционных денег (действия)
         {
+            if (x > 0) allInvest += x;
+            if(x < 0)
+            {
+                allTaken += x;
+                allTaken *= -1;
+            }
             if (Invest + x < 0) return false;
             Invest += x;
             return true;
